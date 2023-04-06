@@ -18,6 +18,7 @@ namespace LibraryAPI.Repositories
         {
             return await _context.Readers
                 .Include(r => r.BookIssues)
+                .Where(r => !r.IsDeleted)
                 .ToListAsync();
         }
 
@@ -49,11 +50,14 @@ namespace LibraryAPI.Repositories
         public async Task DeleteReader(int id)
         {
             var reader = await _context.Readers.FindAsync(id);
-            if (reader != null)
+            if (reader == null)
             {
-                _context.Readers.Remove(reader);
-                await _context.SaveChangesAsync();
+                return;
             }
+
+            reader.IsDeleted = true;
+            _context.Entry(reader).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<BookIssue?> IssueBook(int readerId, int bookId)

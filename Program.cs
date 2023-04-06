@@ -24,8 +24,11 @@ builder.Services.Configure<MvcOptions>(options =>
     options.Filters.Add(new HttpResponseExceptionFilter());
 });
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql("Host=localhost;Port=5433;Database=LibraryDB;Username=postgres;Password=postgres;"));
+{
+    options.UseNpgsql(connectionString);
+});
 
 var app = builder.Build();
 

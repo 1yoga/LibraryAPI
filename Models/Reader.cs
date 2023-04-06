@@ -18,6 +18,9 @@ namespace LibraryAPI.Models
         [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
 
+        [Required]
+        public bool IsDeleted { get; set; }
+
         public ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();
     }
 }
