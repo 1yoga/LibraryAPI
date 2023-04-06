@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LibraryAPI.Models
 {
@@ -13,7 +15,7 @@ namespace LibraryAPI.Models
 
         [Required]
         [Display(Name = "Дата рождения")]
-        [DataType(DataType.Date)]
+        [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
 
         public ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();

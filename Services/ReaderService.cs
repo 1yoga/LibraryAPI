@@ -45,7 +45,12 @@ namespace LibraryAPI.Services
 
         public async Task IssueBook(int readerId, int bookId)
         {
-            await _readerRepository.IssueBook(readerId, bookId);
+            var result = await _readerRepository.IssueBook(readerId, bookId);
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("All copies of the book are already issued.");
+            }
         }
 
         public async Task ReturnBook(int readerId, int bookId)

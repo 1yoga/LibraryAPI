@@ -10,7 +10,7 @@ namespace LibraryAPI.Repositories
         Task AddReader(Reader reader);
         Task UpdateReader(Reader reader);
         Task DeleteReader(int id);
-        Task IssueBook(int readerId, int bookId);
+        Task<BookIssue> IssueBook(int readerId, int bookId);
         Task ReturnBook(int readerId, int bookId);
     }
 }

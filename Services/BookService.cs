@@ -29,6 +29,7 @@ namespace LibraryAPI.Services
 
         public async Task AddBook(Book book)
         {
+            book.AvailableCopies = book.TotalCopies;
             await _bookRepository.AddBook(book);
         }
 

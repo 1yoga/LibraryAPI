@@ -1,6 +1,7 @@
 ﻿using LibraryAPI.Data;
 using LibraryAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.PortableExecutable;
 
 namespace LibraryAPI.Repositories
 {
@@ -15,12 +16,17 @@ namespace LibraryAPI.Repositories
 
         public async Task<IEnumerable<Reader>> GetReaders()
         {
-            return await _context.Readers.ToListAsync();
+            return await _context.Readers
+                .Include(r => r.BookIssues)
+                .ToListAsync();
         }
 
         public async Task<Reader> GetReaderById(int id)
         {
-            return await _context.Readers.FindAsync(id);
+            var reader = await _context.Readers
+                .Include(r => r.BookIssues) 
+                .FirstOrDefaultAsync(r => r.Id == id);
+            return reader ?? throw new InvalidOperationException($"Reader with ID {id} not found.");
         }
 
         public async Task<IEnumerable<Reader>> GetReadersByName(string name)
@@ -50,17 +56,29 @@ namespace LibraryAPI.Repositories
             }
         }
 
-        public async Task IssueBook(int readerId, int bookId)
+        public async Task<BookIssue?> IssueBook(int readerId, int bookId)
         {
-            var bookIssue = new BookIssue
+            var book = await _context.Books.FindAsync(bookId);
+            if (book.AvailableCopies > 0)
             {
-                ReaderId = readerId,
-                BookId = bookId,
-                IssueDate = DateTime.UtcNow
-            };
+                book.AvailableCopies--;
 
-            _context.BookIssues.Add(bookIssue);
-            await _context.SaveChangesAsync();
+                var bookIssue = new BookIssue
+                {
+                    ReaderId = readerId,
+                    BookId = bookId,
+                    IssueDate = DateTime.UtcNow
+                };
+
+                _context.BookIssues.Add(bookIssue);
+
+                await _context.SaveChangesAsync();
+                return bookIssue;
+            }
+            else
+            {
+                return null; 
+            }
         }
 
         public async Task ReturnBook(int readerId, int bookId)
@@ -70,6 +88,9 @@ namespace LibraryAPI.Repositories
 
             if (bookIssue != null)
             {
+                var book = await _context.Books.FindAsync(bookId);
+                book.AvailableCopies++;
+
                 bookIssue.ReturnDate = DateTime.UtcNow;
                 _context.Entry(bookIssue).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

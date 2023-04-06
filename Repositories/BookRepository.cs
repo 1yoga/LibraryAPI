@@ -15,12 +15,18 @@ namespace LibraryAPI.Repositories
 
         public async Task<IEnumerable<Book>> GetBooks()
         {
-            return await _context.Books.ToListAsync();
+            return await _context.Books
+                .Include(b => b.BookIssues)
+                .ToListAsync();
         }
 
         public async Task<Book> GetBookById(int id)
         {
-            return await _context.Books.FindAsync(id);
+            var book = await _context.Books
+                .Include(b => b.BookIssues) 
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            return book ?? throw new InvalidOperationException($"Book with ID {id} not found.");
         }
 
         public async Task<IEnumerable<Book>> GetBooksByName(string name)
