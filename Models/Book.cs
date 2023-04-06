@@ -25,7 +25,7 @@ namespace LibraryAPI.Models
         public int AvailableCopies { get; set; }
 
         [Required]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();
 

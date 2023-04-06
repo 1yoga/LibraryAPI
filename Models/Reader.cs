@@ -19,7 +19,7 @@ namespace LibraryAPI.Models
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<BookIssue> BookIssues { get; set; } = new List<BookIssue>();
     }
