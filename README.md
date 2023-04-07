@@ -30,11 +30,15 @@ dotnet restore
 <pre>
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5433;Database=LibraryDB;Username=postgres;Password=your_password;"
+    "DefaultConnection": "Host=localhost;Port=your_port;Database=LibraryDB;Username=your_username;Password=your_password;"
   },
 ...
 }
 </pre>
+
+- `your_port` - порт в PostgreSQL.
+- `your_username` - Username в PostgreSQL.
+- `your_password` - Password в PostgreSQL.
 
 4. Примените миграции базы данных:
 
