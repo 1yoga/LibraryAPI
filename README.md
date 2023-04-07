@@ -5,8 +5,8 @@ LibraryAPI - это REST API, разработанный для управлен
 ## Используемые технологии
 
 - ASP.NET Core 6.0
-- Entity Framework Core 6.0
-- PostgreSQL
+- Entity Framework Core 7.0.4
+- PostgreSQL 14
 
 ## Установка и настройка
 
