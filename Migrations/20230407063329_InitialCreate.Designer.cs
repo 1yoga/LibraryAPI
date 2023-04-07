@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230406222519_InitialCreate")]
+    [Migration("20230407063329_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -73,14 +73,14 @@ namespace LibraryAPI.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("IssueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("timestamp");
 
                     b.Property<int>("ReaderId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset?>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("timestamp");
 
                     b.HasKey("Id");
 

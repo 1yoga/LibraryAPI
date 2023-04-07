@@ -70,14 +70,14 @@ namespace LibraryAPI.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("IssueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("timestamp");
 
                     b.Property<int>("ReaderId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset?>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("timestamp");
 
                     b.HasKey("Id");
 

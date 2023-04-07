@@ -10,11 +10,9 @@ namespace LibraryAPI.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "ФИО")]
         public string FullName { get; set; }
 
         [Required]
-        [Display(Name = "Дата рождения")]
         [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
 

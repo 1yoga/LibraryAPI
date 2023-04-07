@@ -25,6 +25,16 @@ namespace LibraryAPI.Data
                 .HasOne(bi => bi.Reader)
                 .WithMany(r => r.BookIssues)
                 .HasForeignKey(bi => bi.ReaderId);
+
+            modelBuilder.Entity<BookIssue>(entity =>
+            {
+                entity.Property(e => e.IssueDate).HasColumnType("timestamp");
+            });
+
+            modelBuilder.Entity<BookIssue>(entity =>
+            {
+                entity.Property(e => e.ReturnDate).HasColumnType("timestamp");
+            });
         }
     }
 }

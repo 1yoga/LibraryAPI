@@ -54,8 +54,8 @@ namespace LibraryAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BookId = table.Column<int>(type: "integer", nullable: false),
                     ReaderId = table.Column<int>(type: "integer", nullable: false),
-                    IssueDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ReturnDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    IssueDate = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "timestamp", nullable: true)
                 },
                 constraints: table =>
                 {

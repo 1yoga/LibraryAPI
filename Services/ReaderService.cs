@@ -29,7 +29,6 @@ namespace LibraryAPI.Services
 
         public async Task AddReader(Reader reader)
         {
-            reader.DateOfBirth = reader.DateOfBirth.Date.ToUniversalTime();
             await _readerRepository.AddReader(reader);
         }
 

@@ -71,7 +71,7 @@ namespace LibraryAPI.Repositories
                 {
                     ReaderId = readerId,
                     BookId = bookId,
-                    IssueDate = DateTime.UtcNow
+                    IssueDate = DateTime.Now
                 };
 
                 _context.BookIssues.Add(bookIssue);
@@ -95,7 +95,7 @@ namespace LibraryAPI.Repositories
                 var book = await _context.Books.FindAsync(bookId);
                 book.AvailableCopies++;
 
-                bookIssue.ReturnDate = DateTime.UtcNow;
+                bookIssue.ReturnDate = DateTime.Now;
                 _context.Entry(bookIssue).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
