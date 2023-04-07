@@ -25,14 +25,19 @@ namespace LibraryAPI.Repositories
         public async Task<Reader> GetReaderById(int id)
         {
             var reader = await _context.Readers
-                .Include(r => r.BookIssues) 
+                .Include(r => r.BookIssues)
+                .ThenInclude(bookIssue => bookIssue.Book)
                 .FirstOrDefaultAsync(r => r.Id == id);
             return reader ?? throw new InvalidOperationException($"Reader with ID {id} not found.");
         }
 
         public async Task<IEnumerable<Reader>> GetReadersByName(string name)
         {
-            return await _context.Readers.Where(r => r.FullName.Contains(name)).ToListAsync();
+            return await _context.Readers
+                .Include(reader => reader.BookIssues)
+                .ThenInclude(bookIssue => bookIssue.Book)
+                .Where(reader => EF.Functions.ILike(reader.FullName, $"%{name}%") && !reader.IsDeleted)
+                .ToListAsync();
         }
 
         public async Task AddReader(Reader reader)
@@ -85,7 +90,7 @@ namespace LibraryAPI.Repositories
             }
         }
 
-        public async Task ReturnBook(int readerId, int bookId)
+        public async Task<BookIssue?> ReturnBook(int readerId, int bookId)
         {
             var bookIssue = await _context.BookIssues
                 .FirstOrDefaultAsync(bi => bi.ReaderId == readerId && bi.BookId == bookId && bi.ReturnDate == null);
@@ -98,6 +103,11 @@ namespace LibraryAPI.Repositories
                 bookIssue.ReturnDate = DateTime.Now;
                 _context.Entry(bookIssue).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
+                return bookIssue;
+            }
+            else
+            {
+                return null;
             }
         }
     }

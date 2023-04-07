@@ -32,6 +32,12 @@ namespace LibraryAPI.Repositories
 
         public async Task<IEnumerable<Book>> GetBooksByName(string name)
         {
+            return await _context.Books
+                .Include(b => b.BookIssues)
+                .ThenInclude(bookIssue => bookIssue.Reader)
+                .Where(b => EF.Functions.ILike(b.Name, $"%{name}%") && !b.IsDeleted)
+                .ToListAsync();
+
             return await _context.Books.Where(b => b.Name.Contains(name)).ToListAsync();
         }
 

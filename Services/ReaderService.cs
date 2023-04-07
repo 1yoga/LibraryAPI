@@ -1,5 +1,6 @@
 ﻿using LibraryAPI.Models;
 using LibraryAPI.Repositories;
+using System.Reflection.PortableExecutable;
 
 namespace LibraryAPI.Services
 {
@@ -54,7 +55,13 @@ namespace LibraryAPI.Services
 
         public async Task ReturnBook(int readerId, int bookId)
         {
-            await _readerRepository.ReturnBook(readerId, bookId);
+            var result = await _readerRepository.ReturnBook(readerId, bookId);
+
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("The book has already been returned or was not issued to this reader.");
+            }
         }
     }
 }
